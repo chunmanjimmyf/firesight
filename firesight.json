@@ -1,0 +1,179 @@
+{
+    "appid"       : "0213fc52-4bb0-49b9-8d93-c51f02334f06",
+    "name"      : "FireSIGHT",
+    "description" : "This app implements investigative actions like 'get signature details' on a FireSIGHT device.",
+    "publisher": "Phantom",
+    "type": "firewall",
+    "main_module"    : "firesight_connector.pyc",
+    "app_version": "1.2.7",
+    "utctime_updated": "2016-10-05T05:28:14.000000Z",
+    "package_name": "phantom_firesight",
+    "product_vendor": "Sourcefire",
+    "product_name": "FireSIGHT",
+    "product_version_regex": ".*",
+    "min_phantom_version": "1.2.236",
+    "logo": "sourcefire.png",
+    "license": "Copyright (c) Phantom Cyber Corporation 2015-2016",
+    "configuration": {
+      "device": {
+        "data_type": "string",
+        "order": 0,
+        "description": "Device IP/Hostname",
+        "required": true
+      },
+      "port": {
+        "data_type": "string",
+        "order": 0,
+        "description": "JDBC Port to connect to",
+        "default": 2000
+      },
+      "username": {
+        "data_type": "string",
+        "order": 2,
+        "description": "Username",
+        "required": true
+      },
+      "password": {
+        "data_type": "password",
+        "order": 3,
+        "description": "Password",
+        "required": true
+      }
+    },
+    "actions": [
+      {
+        "action": "test connectivity",
+        "description": "Validate the asset configuration for connectivity",
+        "verbose": "This action logs into the device using a REST Api call to check the connection and credentials configured",
+        "type": "test",
+        "identifier": "test_asset_connectivity",
+        "read_only": true,
+        "parameters": {
+        },
+        "output": [],
+        "versions":"EQ(*)"
+      },
+      {
+        "action": "get signature details",
+        "description": "Get detailed information about a signature",
+        "verbose": "One of the <b>snort_id</b>, <b>bugtraq_id</b> or <b>svid</b> parameters need to be specified. The action will first check for the presence of an id to use it and ignore the rest in the following order: <ul><li><b>snort_id</b><br>The action will use this id if specified and ignore the rest while making the query.</li><li><b>bugtraq_id</b><br>If snort_id is not passed, the action will use the bugtraq_id for the query if specified.</li><li><b>svid</b><br>If both snort_id and bugtraq_id are not specified, the action proceeds to check the presence of the svid and uses it for the query.</li></ul>",
+        "type": "generic",
+        "identifier": "get_signature_info",
+        "read_only": true,
+        "parameters": {
+          "snort_id": {
+            "data_type": "string",
+            "order": 0,
+            "description": "Snort ID",
+            "primary": true,
+            "contains": [ "snort id" ]
+          },
+          "bugtraq_id": {
+            "data_type": "string",
+            "order": 1,
+            "primary": true,
+            "description": "Bugtraq ID",
+            "contains": [ "bugtraq id" ]
+          },
+          "svid": {
+            "data_type": "string",
+            "order": 2,
+            "primary": true,
+            "description": "Sourcefire Vuln ID",
+            "contains": [ "sourcefire vuln id" ]
+          }
+        },
+        "render": {
+          "width": 12,
+          "title": "Get Signature Info",
+          "type": "table",
+          "height": 5
+        },
+        "output": [
+          {
+            "data_path": "action_result.data.*.snort_id",
+            "data_type": "numeric",
+            "column_name": "Snort Id",
+            "column_order": 0,
+            "contains": [ "snort id" ]
+          },
+          {
+            "data_path": "action_result.data.*.title",
+            "data_type": "string",
+            "column_name": "Title",
+            "column_order": 1
+          },
+          {
+            "data_path": "action_result.data.*.rna_vuln_id",
+            "data_type": "numeric",
+            "column_name": "SourceFire Vuln ID",
+            "column_order": 2,
+            "contains": [ "sourcefire vuln id" ]
+          },
+          {
+            "data_path": "action_result.data.*.bugtraq_id",
+            "data_type": "numeric",
+            "column_name": "Bugtraq Id",
+            "column_order": 3,
+            "contains": [ "bugtraq id" ]
+          },
+          {
+            "data_path": "action_result.data.*.available_exploits",
+            "data_type": "string",
+            "column_name": "Available Exploits",
+            "column_order": 4
+          },
+          {
+            "data_path": "action_result.data.*.remote",
+            "data_type": "string",
+            "column_name": "Remote Exploitation",
+            "column_order": 5
+          },
+          {
+            "data_path": "action_result.data.*.exploit",
+            "data_type": "string",
+            "column_name": "Exploit Info",
+            "column_order": 6
+          },
+          {
+            "data_path": "action_result.data.*.short_description",
+            "data_type": "string",
+            "column_name": "Short Description",
+            "column_order": 7
+          },
+          {
+            "data_path": "action_result.status",
+            "data_type": "string"
+          },
+          {
+            "data_path": "action_result.parameter.snort_id",
+            "data_type": "string",
+            "contains": ["snort id"]
+          },
+          {
+            "data_path": "action_result.parameter.bugtraq_id",
+            "data_type": "string",
+            "contains": ["bugtraq id"]
+          },
+          {
+            "data_path": "action_result.parameter.svid",
+            "data_type": "string",
+            "contains": ["sourcefire vuln id"]
+          },
+          {
+            "data_path": "action_result.message",
+            "data_type": "string"
+          },
+          {
+            "data_path": "summary.total_objects",
+            "data_type": "numeric"
+          },
+          {
+            "data_path": "summary.total_objects_successful",
+            "data_type": "numeric"
+          }
+        ],
+        "versions":"EQ(*)"
+      }
+    ]
+}
