@@ -1,7 +1,7 @@
 # --
 # File: firesight_connector.py
 #
-# Copyright (c) Phantom Cyber Corporation, 2014-2016
+# Copyright (c) Phantom Cyber Corporation, 2014-2017
 #
 # This unpublished material is proprietary to Phantom Cyber.
 # All rights reserved. The methods and
@@ -73,7 +73,7 @@ class FiresightConnector(BaseConnector):
         self.save_progress(phantom.APP_PROG_CONNECTING_TO_ELLIPSES, device)
 
         try:
-            self.__conn = jaydebeapi.connect(FIRESIGHT_JDBC_DRIVER_CLASS, [FIRESIGHT_JDBC_DB_URL.format(device=device, port=port), username, password])
+            self.__conn = jaydebeapi.connect(FIRESIGHT_JDBC_DRIVER_CLASS, FIRESIGHT_JDBC_DB_URL.format(device=device, port=port), [username, password])
         except Exception as e:
             return self.set_status(phantom.APP_ERROR, FIRESIGHT_ERR_CONNECT, e)
 
@@ -159,6 +159,7 @@ class FiresightConnector(BaseConnector):
             self._test_asset_connectivity(param)
 
         return self.get_status()
+
 
 if __name__ == '__main__':
 
