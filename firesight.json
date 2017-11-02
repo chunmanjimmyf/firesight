@@ -56,7 +56,7 @@
             "action": "get signature details",
             "description": "Get detailed information about a signature",
             "verbose": "One of the <b>snort_id</b>, <b>bugtraq_id</b> or <b>svid</b> parameters need to be specified. The action will first check for the presence of an id to use it and ignore the rest in the following order: <ul><li><b>snort_id</b><br>The action will use this id if specified and ignore the rest while making the query.</li><li><b>bugtraq_id</b><br>If snort_id is not passed, the action will use the bugtraq_id for the query if specified.</li><li><b>svid</b><br>If both snort_id and bugtraq_id are not specified, the action proceeds to check the presence of the svid and uses it for the query.</li></ul>",
-            "type": "generic",
+            "type": "investigative",
             "identifier": "get_signature_info",
             "read_only": true,
             "parameters": {
