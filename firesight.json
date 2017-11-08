@@ -1,7 +1,7 @@
 {
     "appid": "0213fc52-4bb0-49b9-8d93-c51f02334f06",
     "name": "FireSIGHT",
-    "description": "This app implements investigative actions like 'get signature details' on a FireSIGHT device.",
+    "description": "This app implements investigative actions on the FireSIGHT device",
     "publisher": "Phantom",
     "type": "firewall",
     "main_module": "firesight_connector.pyc",
