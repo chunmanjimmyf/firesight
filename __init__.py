@@ -1,4 +1,5 @@
-# File: firesight_connector.py
+# --
+# File: __init__.py
 #
 # Copyright (c) 2015-2021 Splunk Inc.
 #
