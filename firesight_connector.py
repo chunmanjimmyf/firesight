@@ -112,7 +112,7 @@ class FiresightConnector(BaseConnector):
 
         try:
             results = curs.fetchall()
-        except Exception as e:
+        except Exception:
             return action_result.set_status(phantom.APP_ERROR, FIRESIGHT_ERR_FETCHING_RESULTS)
 
         if results:
