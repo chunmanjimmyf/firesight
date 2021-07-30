@@ -106,7 +106,7 @@ class FiresightConnector(BaseConnector):
         try:
             curs.execute(query)
         except Exception as e:
-            if (str(e).find('wait_timeout') != -1):
+            if str(e).find('wait_timeout') != -1:
                 self._timeout_on_execute = True
             return action_result.set_status(phantom.APP_ERROR, FIRESIGHT_ERR_EXECUTING_QUERY)
 

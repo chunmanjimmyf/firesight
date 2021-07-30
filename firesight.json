@@ -42,7 +42,7 @@
             "data_type": "string",
             "order": 1,
             "description": "JDBC Port to connect to",
-            "default": 2000
+            "default": "2000"
         },
         "username": {
             "data_type": "string",
