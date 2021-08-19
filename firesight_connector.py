@@ -1,14 +1,10 @@
 # --
 # File: firesight_connector.py
 #
-# Copyright (c) Phantom Cyber Corporation, 2015-2018
+# Copyright (c) 2015-2021 Splunk Inc.
 #
-# This unpublished material is proprietary to Phantom Cyber.
-# All rights reserved. The methods and
-# techniques described herein are considered trade secrets
-# and/or confidential. Reproduction or distribution, in whole
-# or in part, is forbidden except by express written permission
-# of Phantom Cyber.
+# SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
+# without a valid written license from Splunk Inc. is PROHIBITED.
 #
 # --
 
@@ -77,7 +73,7 @@ class FiresightConnector(BaseConnector):
         except Exception as e:
             return self.set_status(phantom.APP_ERROR, FIRESIGHT_ERR_CONNECT, e)
 
-        if (self.__conn is None):
+        if self.__conn is None:
             return self.set_status(phantom.APP_ERROR, FIRESIGHT_ERR_CONNECT)
 
         return phantom.APP_SUCCESS
@@ -91,17 +87,17 @@ class FiresightConnector(BaseConnector):
         query = None
         select_clause = "select {0} from rna_vuln".format(','.join(FIRESIGHT_SIG_INFO_COLUMNS))
 
-        if (snort_id is not None):
+        if snort_id is not None:
             query = "{0} where snort_id={1}".format(select_clause, snort_id)
-        elif(bugtraq_id is not None):
+        elif bugtraq_id is not None:
             query = "{0} where bugtraq_id={1}".format(select_clause, bugtraq_id)
-        elif(svid is not None):
+        elif svid is not None:
             query = "{0} where rna_vuln_id={1}".format(select_clause, svid)
         else:
             param_names = "{0}, {1} or {2}".format(FIRESIGHT_JSON_SNORT_ID, FIRESIGHT_JSON_BUGTRAQ_ID, FIRESIGHT_JSON_SVID)
             return action_result.set_status(phantom.APP_ERROR, FIRESIGHT_ERR_NO_PARAMS_PRESENT, param_names=param_names)
 
-        if (phantom.is_fail(self._connect())):
+        if phantom.is_fail(self._connect()):
             self.debug_print("connect failed")
             return self.get_status()
 
@@ -110,19 +106,19 @@ class FiresightConnector(BaseConnector):
         try:
             curs.execute(query)
         except Exception as e:
-            if (str(e).find('wait_timeout') != -1):
+            if str(e).find('wait_timeout') != -1:
                 self._timeout_on_execute = True
             return action_result.set_status(phantom.APP_ERROR, FIRESIGHT_ERR_EXECUTING_QUERY)
 
         try:
             results = curs.fetchall()
-        except Exception as e:
+        except Exception:
             return action_result.set_status(phantom.APP_ERROR, FIRESIGHT_ERR_FETCHING_RESULTS)
 
-        if (results):
+        if results:
             action_result.update_summary({FIRESIGHT_JSON_TOTAL_SIGS: len(results)})
 
-        if (len(results) == 0):
+        if len(results) == 0:
             return action_result.set_status(phantom.APP_SUCCESS, FIRESIGHT_SUCC_NO_MATCH)
 
         for result in results:
@@ -133,7 +129,7 @@ class FiresightConnector(BaseConnector):
 
     def _test_asset_connectivity(self, param):
 
-        if (phantom.is_fail(self._connect())):
+        if phantom.is_fail(self._connect()):
             self.debug_print("connect failed")
             self.save_progress(FIRESIGHT_ERR_CONNECTIVITY_TEST)
             return self.append_to_message(FIRESIGHT_ERR_CONNECTIVITY_TEST)
@@ -146,16 +142,16 @@ class FiresightConnector(BaseConnector):
         action = self.get_action_identifier()
 
         # Process it
-        if (action == self.ACTION_ID_GET_SIGINFO):
+        if action == self.ACTION_ID_GET_SIGINFO:
             # Create an action_result here, we might end up calling the siginfo function twice
             action_result = self.add_action_result(ActionResult(dict(param)))
 
             ret_val = self._get_siginfo(param, action_result)
-            if (phantom.is_fail(ret_val) and self._timeout_on_execute is True):
+            if phantom.is_fail(ret_val) and self._timeout_on_execute is True:
                 # Try once more
                 self.save_progress(FIRESIGHT_MSG_TIMEOUT_TRY_AGAIN)
                 ret_val = self._get_siginfo(param, action_result)
-        elif (action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY):
+        elif action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY:
             self._test_asset_connectivity(param)
 
         return self.get_status()

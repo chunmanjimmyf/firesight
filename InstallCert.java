@@ -29,13 +29,25 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.*;
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.security.KeyStore;
+import java.security.Principal;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
-import java.security.*;
-import java.security.cert.*;
-
-import javax.net.ssl.*;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 public class InstallCert {
 
@@ -68,7 +80,7 @@ public class InstallCert {
     ks.load(in, passphrase);
     in.close();
 
-    SSLContext context = SSLContext.getInstance("TLS");
+    SSLContext context = SSLContext.getInstance("TLSv1.2");
     TrustManagerFactory tmf =
         TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
     tmf.init(ks);
@@ -101,19 +113,12 @@ public class InstallCert {
     BufferedReader reader =
         new BufferedReader(new InputStreamReader(System.in));
 
-    MessageDigest sha1 = MessageDigest.getInstance("SHA1");
-    MessageDigest md5 = MessageDigest.getInstance("MD5");
     boolean found = false;
     int i;
     for (i = 0; i < chain.length; i++) {
         X509Certificate cert = chain[i];
- 
         System.out.println("  Subject  " + cert.getSubjectDN());
         System.out.println("   Issuer  " + cert.getIssuerDN());
-        sha1.update(cert.getEncoded());
-        System.out.println("   sha1    " + toHexString(sha1.digest()));
-        md5.update(cert.getEncoded());
-        System.out.println("   md5     " + toHexString(md5.digest()));
         System.out.println();
 
         Principal p = cert.getSubjectDN();
