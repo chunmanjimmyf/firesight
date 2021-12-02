@@ -22,12 +22,20 @@
     "pip3_dependencies": {
         "wheel": [
             {
+                "module": "JPype1",
+                "input_file": "wheels/JPype1-1.3.0-cp36-cp36m-manylinux_2_5_x86_64.manylinux1_x86_64.whl"
+            },
+            {
                 "module": "JayDeBeApi",
                 "input_file": "wheels/JayDeBeApi-1.2.3-py3-none-any.whl"
             },
             {
-                "module": "JPype1",
-                "input_file": "wheels/JPype1-1.3.0-cp36-cp36m-manylinux_2_5_x86_64.manylinux1_x86_64.whl"
+                "module": "simplejson",
+                "input_file": "wheels/simplejson-3.17.2-cp36-cp36m-manylinux2010_x86_64.manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+            },
+            {
+                "module": "typing_extensions",
+                "input_file": "wheels/typing_extensions-4.0.1-py3-none-any.whl"
             }
         ]
     },
